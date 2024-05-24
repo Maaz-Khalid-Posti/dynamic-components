@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, ChangeEvent } from 'react';
+import Input from './component/input';
+import Button from './component/button';
+import Table from './component/table';
 import './App.css';
 
-function App() {
+const App: React.FC = () => {
+  const [inputValue, setInputValue] = useState<string>('');
+  const [data, setData] = useState<Array<{ name: string }>>([]);
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleButtonClick = () => {
+    if (inputValue.trim() !== '') {
+      setData([...data, { name: inputValue }]);
+      setInputValue('');
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <h1>Dynamic Components</h1>
+      <div className="input-container">
+        <Input
+          value={inputValue}
+          onChange={handleInputChange}
+          placeholder="Enter name"
+        />
+        <Button
+          onClick={handleButtonClick}
+          text="Add"
+        />
+      </div>
+      <Table data={data} />
     </div>
   );
-}
+};
 
 export default App;
